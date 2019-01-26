@@ -15,6 +15,7 @@ class Index
 		$redis = Redisutil::client();
 	
 		$redis->set('list','chensw10');
+		echo "ok it's index";
 	}
 
 

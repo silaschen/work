@@ -9,6 +9,6 @@ class Meeting
 	
 
 	public function index(){
-		echo 'ok';
+		var_dump($_GET);
 	}
 }

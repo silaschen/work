@@ -3,17 +3,19 @@ namespace easy;
 /**
  * framework entrance
  */
-require __DIR__.'/route.php';
+require __DIR__.'/Load.php';
 class Easy
 {
 	
 	function __construct()
 	{
-		spl_autoload_register(array('\easy\Route','autoLoad'));
+		spl_autoload_register(array('\easy\Load','autoLoad'));
 	}
 
 	public  function run(){
-		Route::Load();	
+		$dis = \config\route::Load();
+		Load::Load($dis);
+
 
 	}
 

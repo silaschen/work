@@ -1,61 +1,45 @@
 <?php
+
 namespace easy;
-/**
- * 
- */
-class Route
-{
 
-	static public function autoLoad($class){
-		$class_path=str_replace('\\', '/', $class);
+class Route {
+    /** @var string */
+    public $httpMethod;
 
-		$path_params = explode("/", $class_path);
-		var_dump($class_path);
-		$php_script = ucfirst(end($path_params));
-		array_pop($path_params);
-		$path = implode("/", $path_params);
-		$class_path = sprintf("%s/%s/%s",APP_PATH,$path,$php_script.'.php');
+    /** @var string */
+    public $regex;
 
-		// var_dump($class_path);die;
+    /** @var array */
+    public $variables;
 
-		if (file_exists($class_path)) {
-			// var_dump($class_path);
-			include_once($class_path);
-		}
+    /** @var mixed */
+    public $handler;
 
-	}
+    /**
+     * Constructs a route (value object).
+     *
+     * @param string $httpMethod
+     * @param mixed  $handler
+     * @param string $regex
+     * @param array  $variables
+     */
+    public function __construct($httpMethod, $handler, $regex, $variables) {
+        $this->httpMethod = $httpMethod;
+        $this->handler = $handler;
+        $this->regex = $regex;
+        $this->variables = $variables;
+    }
 
-
-	static public function load(){
-
-		$url = $_SERVER['REQUEST_URI'];
-		$params = explode("/", ltrim($url,'/'));
-		$moudle = $params[0];
-		$controller = $params[1];
-		$action=$params[2];
-		$class = sprintf("app\%s\controller\%s",$moudle,ucfirst($controller));
-		$Con = new $class();
-		$Con->$action();
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * Tests whether this route matches the given string.
+     *
+     * @param string $str
+     *
+     * @return bool
+     */
+    public function matches($str) {
+        $regex = '~^' . $this->regex . '$~';
+        return (bool) preg_match($regex, $str);
+    }
 
 }
