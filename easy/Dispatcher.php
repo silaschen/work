@@ -97,7 +97,7 @@ class Dispatcher {
             ));
         }
 
-        $this->methodToRegexToRoutesMap[$httpMethod][$regex] = new Route(
+        $this->methodToRegexToRoutesMap[$httpMethod][$regex] = new Dispahandler(
             $httpMethod, $handler, $regex, $variables
         );
     }
@@ -127,7 +127,6 @@ class Dispatcher {
     }
 
     /**
-     * 分发
      * @param $httpMethod
      * @param $uri
      */

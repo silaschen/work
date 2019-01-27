@@ -1,6 +1,7 @@
 <?php 
 namespace help;
 
+use easy\Config;
 class Redisutil
 {
 	public static $client;
@@ -9,7 +10,7 @@ class Redisutil
 
 	private function __construct()
 	{
-		$rediscfg = ['host'=>'127.0.0.1','port'=>6379];
+		$rediscfg = Config::get('redis','app');
 		$this->redis = new \Redis();
 		$this->redis->connect($rediscfg['host'],$rediscfg['port']);
 		if(isset($rediscfg['db'])){

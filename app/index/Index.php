@@ -1,9 +1,10 @@
 <?php
-namespace app\index\controller;
+namespace app\index;
 /**
  * 
  */
 use help\Redisutil;
+use easy\db\postgres;
 class Index
 {
 	public function __construct(){
@@ -15,7 +16,10 @@ class Index
 		$redis = Redisutil::client();
 	
 		$redis->set('list','chensw10');
-		echo "ok it's index";
+
+		$model = new \app\model\codata();
+		$model->getdata();
+	
 	}
 
 

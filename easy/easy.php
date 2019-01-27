@@ -2,23 +2,35 @@
 namespace easy;
 /**
  * framework entrance
+ *自动加载
+ *分发路由
  */
 require __DIR__.'/Load.php';
+use config\Route;
+
 class Easy
 {
-	
-	function __construct()
-	{
+	static protected $instanceDispatcher;
+
+
+	static public  function run(){
+
+		self::autoLoad();
+		self::registerRoute();
+		Load::Init(self::$instanceDispatcher);
+
+	}
+
+
+	static public function autoLoad(){
+
 		spl_autoload_register(array('\easy\Load','autoLoad'));
 	}
 
-	public  function run(){
-		$dis = \config\route::Load();
-		Load::Load($dis);
 
-
+	static public function registerRoute(){
+		self::$instanceDispatcher = Route::load();
 	}
-
 
 
 
