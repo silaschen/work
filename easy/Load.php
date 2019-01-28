@@ -53,13 +53,20 @@ class Load
 				}
 		}else{
 
+
 					$params = explode("/", ltrim($url,'/'));
-					if (count($params) < 3) {
+					if ($url == '/') {
+						$moudle = \easy\Config::get('DEFAULT_MOUDLE','app');
+						$controller = \easy\Config::get('DEFAULT_CONTROLLER','app');
+						$action=\easy\Config::get('DEFAULT_ACTION','app');
+					}elseif (count($params)<3) {
 						throw new \Exception("Bad request", 1);
+					}else{
+					
+							$moudle = $params[0];
+							$controller = $params[1];
+							$action=$params[2];
 					}
-					$moudle = $params[0];
-					$controller = $params[1];
-					$action=$params[2];
 
 					$class = sprintf("app\controller\%s\%s",$moudle,ucfirst($controller));
 					$Con = new $class();

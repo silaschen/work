@@ -15,4 +15,8 @@ return [
 		'port'=>6379
 	),
 
+	'DEFAULT_MOUDLE'=>'index',
+	'DEFAULT_CONTROLLER'=>'Index',
+	'DEFAULT_ACTION'=>'index',
+
 ];
