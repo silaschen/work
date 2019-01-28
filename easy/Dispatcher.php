@@ -131,34 +131,45 @@ class Dispatcher {
      * @param $uri
      */
     public function dispatch($httpMethod, $uri) {
-        $staticRoutes = array_keys($this->staticRoutes[$httpMethod]);
-        
-        foreach ($staticRoutes as $staticRoute) {
-            if($staticRoute === $uri) {
-                return [self::FOUND, $this->staticRoutes[$httpMethod][$staticRoute], []];
-            }
-        }
+      
 
-        $routeLookup = [];
-        $index = 1;
-        $regexes = array_keys($this->methodToRegexToRoutesMap[$httpMethod]);
-        foreach ($regexes as $regex) {
-            $routeLookup[$index] = [
-                $this->methodToRegexToRoutesMap[$httpMethod][$regex]->handler,
-                $this->methodToRegexToRoutesMap[$httpMethod][$regex]->variables,
-            ];
-            $index += count($this->methodToRegexToRoutesMap[$httpMethod][$regex]->variables);
+        if (array_key_exists($httpMethod, $this->staticRoutes)) {
+                
+                $staticRoutes = array_keys($this->staticRoutes[$httpMethod]);
+        
+                foreach ($staticRoutes as $staticRoute) {
+                    if($staticRoute === $uri) {
+                        return [self::FOUND, $this->staticRoutes[$httpMethod][$staticRoute], []];
+                    }
+                }
+
         }
-        $regexCombined = '~^(?:' . implode('|', $regexes) . ')$~';
-        if(!preg_match($regexCombined, $uri, $matches)) {
-            return [self::NOT_FOUND];
+        
+        if (array_key_exists($httpMethod, $this->methodToRegexToRoutesMap)) {
+           
+                $routeLookup = [];
+                $index = 1;
+                $regexes = array_keys($this->methodToRegexToRoutesMap[$httpMethod]);
+                foreach ($regexes as $regex) {
+                    $routeLookup[$index] = [
+                        $this->methodToRegexToRoutesMap[$httpMethod][$regex]->handler,
+                        $this->methodToRegexToRoutesMap[$httpMethod][$regex]->variables,
+                    ];
+                    $index += count($this->methodToRegexToRoutesMap[$httpMethod][$regex]->variables);
+                }
+                $regexCombined = '~^(?:' . implode('|', $regexes) . ')$~';
+                if(!preg_match($regexCombined, $uri, $matches)) {
+                    return [self::NOT_FOUND];
+                }
+                for ($i = 1; '' === $matches[$i]; ++$i);
+                list($handler, $varNames) = $routeLookup[$i];
+                $vars = [];
+                foreach ($varNames as $varName) {
+                    $vars[$varName] = $matches[$i++];
+                }
+                return [self::FOUND, $handler, $vars];
+
         }
-        for ($i = 1; '' === $matches[$i]; ++$i);
-        list($handler, $varNames) = $routeLookup[$i];
-        $vars = [];
-        foreach ($varNames as $varName) {
-            $vars[$varName] = $matches[$i++];
-        }
-        return [self::FOUND, $handler, $vars];
+       
     }
 }

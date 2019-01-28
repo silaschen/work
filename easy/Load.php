@@ -32,7 +32,7 @@ class Load
 		$httpMethod = $_SERVER['REQUEST_METHOD'];
 		$routeInfo = $handler->dispatch($httpMethod, $url);
 
-		if ($routeInfo[0] == Dispatcher::FOUND) {
+		if ($routeInfo && $routeInfo[0] == Dispatcher::FOUND) {
 				$args = $routeInfo[2];
 				$url = $routeInfo[1];
 
@@ -54,9 +54,13 @@ class Load
 		}else{
 
 					$params = explode("/", ltrim($url,'/'));
+					if (count($params) < 3) {
+						throw new \Exception("Bad request", 1);
+					}
 					$moudle = $params[0];
 					$controller = $params[1];
 					$action=$params[2];
+
 					$class = sprintf("app\controller\%s\%s",$moudle,ucfirst($controller));
 					$Con = new $class();
 					$Con->$action();

@@ -9,4 +9,10 @@ class Index
 		View::render('index.tpl');
 	}
 
+	public function test($args){
+
+		var_dump($args);
+
+	}
+
 }
