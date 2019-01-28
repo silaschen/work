@@ -57,7 +57,7 @@ class Load
 					$moudle = $params[0];
 					$controller = $params[1];
 					$action=$params[2];
-					$class = sprintf("app\%s\%s",$moudle,ucfirst($controller));
+					$class = sprintf("app\controller\%s\%s",$moudle,ucfirst($controller));
 					$Con = new $class();
 					$Con->$action();
 

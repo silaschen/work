@@ -3,12 +3,9 @@ namespace easy;
 /**
  * 
  */
-class Route extends Dispatcher
+class Route
 {
 
-	static function get(){
-		 $this->addRoute('GET', $route, $handler);
-	}
 	
 
 

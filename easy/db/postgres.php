@@ -7,11 +7,10 @@ class postgres {
     private $cfg;
     private $con;
 
-    public function __construct($condb = null) {
+     function __construct($condb = null) {
     	$db = Config::get('pgsql','app');
 
         $this->cfg = is_null($condb) ? $db : $condb;
-
         try {
             $connection_string = sprintf("host=%s dbname=%s", $this->cfg["host"], $this->cfg["database"]);
             if (array_key_exists("port", $this->cfg)) {
@@ -26,15 +25,14 @@ class postgres {
             $this->con = pg_connect($connection_string);
         } catch (\Exception $ex) {
             print $ex->getMessage();
-            writelog(sprintf("error connect database, %s", $ex->getMessage()));
+          
         }
     }
 
    
-    
-   
 
-    public function getDataCount($table,$map=array()){
+
+    public function Count($table,$map=array()){
  
         $sql = sprintf("select count(*) as total from %s",$table);
         $params = [];
@@ -62,7 +60,7 @@ class postgres {
 
     public function getDataList_byPage($table,$field='*',$map=array(),$size=false,$start=false){
         $sql = sprintf("select %s from %s",$field,$table);
-        // var_dump($sql);die;
+
         $params = [];
         if(!empty($map)){
             $sql .= " WHERE ";
@@ -91,7 +89,7 @@ class postgres {
         return $res;
     }
 
-    public function updateTableData($table,$data=[],$id){
+    public function updateById($table,$data=[],$id){
         if(empty($data)){
             return false;
         }
@@ -107,7 +105,7 @@ class postgres {
         pg_query($this->con,'commit');
     }
 
-    public function updateTableDataByfilter($table,$data=[],$map=array()){
+    public function update($table,$data=[],$map=array()){
         if(empty($data)){
             return false;
         }
@@ -135,7 +133,7 @@ class postgres {
     **format $data = array('column1'=>$data1,'column2'=>$data2.....);
     **
     */
-     public function InsertTableData($table,$data=[]){
+     public function Insert($table,$data=[]){
         if(empty($data)){
             return false;
         }
@@ -149,6 +147,23 @@ class postgres {
         $sql = mb_substr($sql, 0,strripos($sql, ",")).")";   
         pg_query_params($this->con,$sql,$params);
         pg_query($this->con,'commit');
+    }
+
+
+    public function query($sql){
+        $rs = pg_query($this->con, $sql);
+        $res = [];
+        while ($row = pg_fetch_assoc($rs)) {
+            $res[] = $row;
+        }
+        pg_free_result($rs);
+        return $res;
+    }
+
+    public function execute($sql){
+        pg_query($this->con,$sql);
+        pg_query($this->con,'commit');
+
     }
 
    

@@ -6,7 +6,7 @@ namespace easy;
  *分发路由
  */
 require __DIR__.'/Load.php';
-use config\Route;
+use route\Route;
 
 class Easy
 {
