@@ -1,12 +1,12 @@
 <?php
 return [
-
+	'DEBUGE'=>true,
 	'pgsql'=>array(
-	    "host" => "10.120.23.175",
+	    "host" => "127.0.0.1",
 	    "port" => 5432,
-	    "database" => "senseusers",
-	    "username" => "sense",
-	    "password" => "QXENu6jKyaCG",
+	    "database" => "xxx",
+	    "username" => "root",
+	    "password" => "root",
 	),
 
 	'redis'=>array(

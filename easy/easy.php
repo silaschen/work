@@ -5,7 +5,8 @@ namespace easy;
  *自动加载
  *分发路由
  */
-require __DIR__.'/Load.php';
+include_once __DIR__.'/Load.php';
+
 use route\Route;
 
 class Easy
@@ -14,11 +15,24 @@ class Easy
 
 
 	static public  function run(){
-
 		self::autoLoad();
+		self::ErrorHandler();
 		self::registerRoute();
-		Load::Init(self::$instanceDispatcher);
+		Load::Init();
 
+	}
+
+	static function  ErrorHandler(){
+		if (\easy\Config::get('DEBUGE','app') == true) {
+			ini_set("display_errors", 'On');
+			error_reporting(E_ALL);
+			$whoops = new \Whoops\Run;
+			$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+			$whoops->register();
+		}else{
+			ini_set("display_errors", 'Off');
+		}
+		
 	}
 
 
@@ -29,7 +43,8 @@ class Easy
 
 
 	static public function registerRoute(){
-		self::$instanceDispatcher = Route::load();
+		// self::$instanceDispatcher = Route::load();
+		include_once APP_PATH.'/route/Route.php';
 	}
 
 

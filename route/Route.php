@@ -1,25 +1,10 @@
 <?php
-namespace route;
+use easy\Routehand;
 
-use easy\Dispatcher;
-class Route
-{
-	
-
-
-   static public function Load(){
    	
-   		$dis = new Dispatcher();
+Routehand::get('/index',"index@Index@index");
+Routehand::get('/app/show/{appid}/{sheetid}',"index@Index@list");
 
-   		$dis->get('/index',"app@controller@index@Index@index");
-         
-   		$dis->get('/get/{id}',"app@controller@index@Index@test");
+Routehand::get('/get/user/{id}',"index@Index@test");
 
-
-   		return $dis;
-   } 
-	
-
-
-
-}
+Routehand::get('/test/app',"api@app@getUser");

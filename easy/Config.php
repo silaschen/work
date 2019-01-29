@@ -13,7 +13,7 @@ class Config
 			return self::$box[$name];
 		}
 		if (file_exists($file_path)) {
-			$config = require_once $file_path;
+			$config = include_once $file_path;
 			self::$box = $config;
 			return self::$box[$name];
 

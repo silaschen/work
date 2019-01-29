@@ -1,17 +1,16 @@
 <?php
 namespace easy;
 /**
- * 
+ * 自动加载
+ * 路由分发
  */
-use easy\Dispatcher;
-
+use easy\Routehand;
 class Load
 {
 
 	static public function autoLoad($class){
 		$class_path=str_replace('\\', '/', $class);
 		$path_params = explode("/", $class_path);
-
 		$php_script = ucfirst(end($path_params));
 		array_pop($path_params);
 		$path = implode("/", $path_params);
@@ -26,28 +25,26 @@ class Load
 
 
 
-	static public function Init($handler){
+	static public function Init(){
 
 		$url = $_SERVER['REQUEST_URI'];
 		$httpMethod = $_SERVER['REQUEST_METHOD'];
-		$routeInfo = $handler->dispatch($httpMethod, $url);
+		$routeInfo = Routehand::dispatch($httpMethod, $url);
 
-		if ($routeInfo && $routeInfo[0] == Dispatcher::FOUND) {
+		if ($routeInfo && $routeInfo[0] == Routehand::FOUND) {
 				$args = $routeInfo[2];
 				$url = $routeInfo[1];
 
 				if (is_string($url) && preg_match("/@/", $url)) {
 					$url_path = explode("/", str_replace("@", "/", $url));
-					if (count($url_path) < 4) {
+					if (count($url_path) < 3) {
 						throw new \Exception("Error route defined", 1);
-						
 					}
-
 					$action =  end($url_path);
 					array_pop($url_path);
 					$controller = end($url_path);
 					array_pop($url_path);
-					$class = sprintf("%s\%s",implode("\\", $url_path),ucfirst($controller));
+					$class = sprintf("app\controller\%s\%s",implode("\\", $url_path),ucfirst($controller));
 					$controller = new $class();
 					$controller->$action($args);
 				}
@@ -55,6 +52,7 @@ class Load
 
 
 					$params = explode("/", ltrim($url,'/'));
+
 					if ($url == '/') {
 						$moudle = \easy\Config::get('DEFAULT_MOUDLE','app');
 						$controller = \easy\Config::get('DEFAULT_CONTROLLER','app');

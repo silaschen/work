@@ -15,4 +15,9 @@ class Index
 
 	}
 
+	public function list($data){
+
+		var_dump($data);
+	}
+
 }

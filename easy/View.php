@@ -5,9 +5,9 @@ namespace easy;
  */
 include_once realpath(APP_PATH. "/easy/libs/smarty-3.1.29/libs/Smarty.class.php");
 
-define("SMARTY_TEMPLATE_PATH", realpath(APP_PATH . "/smarty/templates"));
-define("SMARTY_COMPILE_PATH", realpath(APP_PATH . "/smarty/compile"));
-define("SMARTY_CACHE_PATH", realpath(APP_PATH . "/smarty/cache"));
+define("SMARTY_TEMPLATE_PATH", APP_PATH . "/app/view");
+define("SMARTY_COMPILE_PATH", APP_PATH . "/app/view/compile");
+define("SMARTY_CACHE_PATH", APP_PATH . "/app/view/cache");
 
 class View
 {
@@ -17,13 +17,24 @@ class View
 	private $smarty;
 		
 	private function __construct(){
-
-		// print_r("我被加载啦哈哈哈哈");
+		$this->checkSmartyDir();
 		$this->smarty = new \Smarty();
 		$this->smarty->setTemplateDir(SMARTY_TEMPLATE_PATH);
 		$this->smarty->setCacheDir(SMARTY_CACHE_PATH);
 		$this->smarty->setCompileDir(SMARTY_COMPILE_PATH);
 	}
+
+
+		
+	private function checkSmartyDir(){
+		if (!file_exists(SMARTY_COMPILE_PATH)) {
+			mkdir(SMARTY_COMPILE_PATH);
+		}
+		if (!file_exists(SMARTY_CACHE_PATH)) {
+			mkdir(SMARTY_CACHE_PATH);
+		}
+	}
+
 
 	static public function createInstance(){
 		if (self::$instance) {

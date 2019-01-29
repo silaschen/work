@@ -1,0 +1,10 @@
+{
+	"name":"easy phpframework",
+	"description":"this is a simple php framework used by codata and Qi TEAM",
+	"type":"Framework",
+	"require":{
+		"php":">=5.4",
+		"filp/whoops":"*"
+	}
+
+}
