@@ -4,7 +4,8 @@
 	"type":"Framework",
 	"require":{
 		"php":">=5.4",
-		"filp/whoops":"*"
+		"filp/whoops":"*",
+		"illuminate/database": "*"
 	}
 
 }

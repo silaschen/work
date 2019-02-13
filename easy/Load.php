@@ -28,7 +28,12 @@ class Load
 	static public function Init(){
 
 		$url = $_SERVER['REQUEST_URI'];
+		if (preg_match("/\?/", $url)) {
+			$url = substr($url,0,strpos($url, '?'));
+		}
+
 		$httpMethod = $_SERVER['REQUEST_METHOD'];
+		// var_dump($_SERVER);die;
 		$routeInfo = Routehand::dispatch($httpMethod, $url);
 
 		if ($routeInfo && $routeInfo[0] == Routehand::FOUND) {
@@ -52,7 +57,7 @@ class Load
 
 
 					$params = explode("/", ltrim($url,'/'));
-
+					
 					if ($url == '/') {
 						$moudle = \easy\Config::get('DEFAULT_MOUDLE','app');
 						$controller = \easy\Config::get('DEFAULT_CONTROLLER','app');

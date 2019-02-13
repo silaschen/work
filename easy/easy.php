@@ -8,7 +8,8 @@ namespace easy;
 include_once __DIR__.'/Load.php';
 
 use route\Route;
-
+use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Container\Container;
 class Easy
 {
 	static protected $instanceDispatcher;
@@ -17,7 +18,15 @@ class Easy
 	static public  function run(){
 		self::autoLoad();
 		self::ErrorHandler();
+		
+		//加载Eloquent ORM
+		// Eloquent ORM
+
+		// self::registerORM();
+
+
 		self::registerRoute();
+
 		Load::Init();
 
 	}
@@ -46,6 +55,15 @@ class Easy
 		// self::$instanceDispatcher = Route::load();
 		include_once APP_PATH.'/route/Route.php';
 	}
+
+	static private function registerORM(){
+
+		$capsule = new DB;
+
+		$capsule->addConnection();
+		$capsule->setAsGlobal();
+		$capsule->bootEloquent();
+	} 
 
 
 

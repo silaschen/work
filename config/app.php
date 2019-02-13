@@ -2,11 +2,13 @@
 return [
 	'DEBUGE'=>true,
 	'pgsql'=>array(
-	    "host" => "127.0.0.1",
+		"driver"=>"pgsql",
+		"host" => "10.120.23.175",
 	    "port" => 5432,
-	    "database" => "xxx",
-	    "username" => "root",
-	    "password" => "root",
+	    "database" => "senseusers",
+	    "username" => "sense",
+	    "password" => "QXENu6jKyaCG",
+	    'schema'   => 'public',
 	),
 
 	'redis'=>array(
@@ -18,5 +20,6 @@ return [
 	'DEFAULT_MOUDLE'=>'index',
 	'DEFAULT_CONTROLLER'=>'Index',
 	'DEFAULT_ACTION'=>'index',
+	'pagesize'=>6,
 
 ];

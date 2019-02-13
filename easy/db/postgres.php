@@ -78,7 +78,7 @@ class postgres {
 
         if ($size !== false && $start !== false) {    
                 array_push($params, $size,$start);
-                $sql .= " order by id desc limit $".(count($params)-1)." offset $".count($params);
+                $sql .= " limit $".(count($params)-1)." offset $".count($params);
         }
         $res = [];
         $rs = pg_query_params($this->con, $sql,$params);
@@ -148,6 +148,22 @@ class postgres {
         pg_query_params($this->con,$sql,$params);
         pg_query($this->con,'commit');
     }
+
+
+    public function page($table,$fields='*',$map=[]){
+        $page = filter_input(INPUT_GET,'p') ? filter_input(INPUT_GET, 'p') : 1;
+
+        $count = $this->Count($table,$map);
+        $pageOBJ = new \easy\Page($count,5,$page,\easy\Config::get('pagesize','app'));
+
+        $list = $this->getDataList_byPage($table,$fields,$map,$pageOBJ->size,$pageOBJ->start_num);
+
+        $page11 = $pageOBJ->showPages(1);
+
+      
+        return [$page11,$list];
+    }
+
 
 
     public function query($sql){

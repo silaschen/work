@@ -17,6 +17,7 @@ class View
 	private $smarty;
 		
 	private function __construct(){
+		// print_r("I am loaded by php");
 		$this->checkSmartyDir();
 		$this->smarty = new \Smarty();
 		$this->smarty->setTemplateDir(SMARTY_TEMPLATE_PATH);
@@ -46,10 +47,15 @@ class View
 	} 
 
 
-	static function render($file){
+	static function render($file,$data=[]){
 		$file = APP_PATH.'/app/view/'.$file;
 		if (!file_exists($file)) {
 			throw new \Exception("this view file does not exists", 1);
+		}
+		if ($data) {
+			foreach ($data as $key => $value) {
+				(self::createInstance())->smarty->assign($key,$value);
+			}
 		}
 		(self::createInstance())->smarty->display($file);
 

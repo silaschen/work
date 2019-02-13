@@ -6,7 +6,11 @@ use easy\View;
 class Index
 {
 	public function index(){
-		View::render('index.tpl');
+		$model = new \app\model\Index();
+		list($page,$list) = $model->getLesson();
+
+		View::render('index.tpl',['data'=>$list,'page'=>$page]);
+		
 	}
 
 	public function test($args){
@@ -17,7 +21,7 @@ class Index
 
 	public function list($data){
 
-		var_dump($data);
+		var_dump(\easy\db\DB::table('user_alerts')->orderby("id asc")->limit(29)->get());
 	}
 
 }
